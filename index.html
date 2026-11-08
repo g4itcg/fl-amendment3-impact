@@ -84,12 +84,12 @@ function drawMapBackground() {
     });
   }
 }
-
 function render() {
-  drawMapBackground();
   var svg = document.getElementById('mapSvg');
   var existing = svg.querySelectorAll('.circle-c, .label-t, .county-bg');
   for (var i = 0; i < existing.length; i++) { existing[i].remove(); }
+  
+  drawMapBackground();
   document.getElementById('tooltip').style.display = 'none';
   
   var data = currentTab === 'counties' ? COUNTIES : CITIES;
