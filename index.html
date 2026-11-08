@@ -241,14 +241,22 @@ function hideTip() { document.getElementById('tooltip').style.display = 'none'; 
 
 function moveTip(e) {
   var t = document.getElementById('tooltip');
-  var r = document.getElementById('mapWrap').getBoundingClientRect();
-  var x = e.pageX - r.left + 12;
-  var y = e.pageY - r.top - t.offsetHeight - 8;
-  // Keep tooltip inside the map area
-  if (x + t.offsetWidth + 10 > r.width) { x = e.pageX - r.left - t.offsetWidth - 12; }
-  if (y < 0) { y = e.pageY - r.top + 20; }
-  t.style.left = Math.max(4, x) + 'px';
-  t.style.top = Math.max(4, y) + 'px';
+  var wrap = document.getElementById('mapWrap');
+  var wrapRect = wrap.getBoundingClientRect();
+  // Anchor to the circle being hovered, not raw mouse coords
+  var c = e.target;
+  var rect = c.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2 - wrapRect.left;
+  var cy = rect.top + rect.height / 2 - wrapRect.top;
+  var x = cx + 14;
+  var y = cy - t.offsetHeight / 2;
+  // Flip to the left side if near right edge
+  if (x + t.offsetWidth + 10 > wrapRect.width) { x = cx - t.offsetWidth - 14; }
+  if (x < 4) { x = 4; }
+  if (y < 4) { y = 4; }
+  if (y + t.offsetHeight > wrap.scrollHeight - 4) { y = wrap.scrollHeight - t.offsetHeight - 4; }
+  t.style.left = x + 'px';
+  t.style.top = y + 'px';
 }
 
 function sortBy(col) {
