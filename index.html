@@ -52,8 +52,9 @@ svg{display:block;width:100%;height:auto;position:relative;z-index:1}
 <div class="legend-bar"><div style="background:#ffffcc"></div><div style="background:#ffeda0"></div><div style="background:#feb24c"></div><div style="background:#c0392b"></div></div>
 </div>
 <div class="toggle-bar">
-<button class="active" onclick="showField('total5')">5-Year Total</button>
+<button class="active" onclick="showField('total5')">Total Revenue Loss</button>
 <button onclick="showField('y1')">Year 1</button>
+<button onclick="showPerHome()">Per Homeowner (2028)</button>
 </div>
 <div id="mapWrap">
 <div class="tooltip" id="tooltip"></div>
@@ -176,13 +177,23 @@ function render() {
   var label2 = currentTab === 'counties' ? 'counties' : 'cities';
   var maxAmt = maxVal;
   
+  // Per-homeowner mode
+  if (showPerHomeFlag) {
+    label = 'per homeowner';
+    var millageRates = {"Alachua":10.1,"Baker":11.2,"Bay":8.9,"Bradford":11.5,"Brevard":9.8,"Broward":10.9,"Calhoun":10.5,"Charlotte":9.2,"Citrus":10.3,"Clay":9.5,"Collier":8.1,"Columbia":10.5,"DeSoto":11,"Dixie":11.4,"Duval":10.2,"Escambia":10.8,"Flagler":9.7,"Franklin":10,"Gadsden":10.5,"Gilchrist":11.6,"Glades":10,"Gulf":9.8,"Hamilton":11.2,"Hardee":10.8,"Hendry":10.3,"Hernando":10.1,"Highlands":9.8,"Hillsborough":10.8,"Holmes":12.5,"Indian River":9.4,"Jackson":10.5,"Jefferson":10.9,"Lafayette":11.8,"Lake":9.6,"Lee":8.8,"Leon":10.2,"Levy":10.5,"Liberty":9.5,"Madison":11,"Manatee":9.5,"Marion":10,"Martin":9.7,"Miami-Dade":11.6,"Monroe":7.1,"Nassau":9.2,"Okaloosa":8.5,"Okeechobee":9.8,"Orange":10.6,"Osceola":10.4,"Palm Beach":10.3,"Pasco":10.1,"Pinellas":10.4,"Polk":9.9,"Putnam":10.7,"Santa Rosa":8.4,"Sarasota":8.7,"Seminole":10,"St. Johns":8.7,"St. Lucie":9.9,"Sumter":9,"Suwannee":10.6,"Taylor":10.5,"Union":10.5,"Volusia":9.8,"Wakulla":9.9,"Walton":8.2,"Washington":10.2};
+    sorted.forEach(function(d) {
+      var mr = millageRates[d.name] || 10.5;
+      d.perHome = Math.round(mr * 198.589 * 10) / 10;
+    });
+  }
+  
   // Filter by search text
   var q = '';
   var eb = document.getElementById('searchBox');
   if (eb) { q = (eb.value || '').toLowerCase(); }
   var shown = q ? sorted.filter(function(d) { return d.name.toLowerCase().indexOf(q) >= 0; }) : sorted;
   
-  var h = '<div style="font-weight:700;font-size:13px;margin:12px 0 6px;grid-column:1/-1">All ' + label2 + ' by revenue loss (' + label + ') — ' + shown.length + ' total</div>';
+  var h = '<div style="font-weight:700;font-size:13px;margin:12px 0 6px;grid-column:1/-1">All ' + (showPerHomeFlag ? label2 + ' by estimated annual savings (2028)' : label2 + ' by revenue loss (' + label + ')') + ' — ' + shown.length + ' total</div>';
   h += '<div style="grid-column:1/-1;display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">';
   h += '<input id="searchBox" type="text" placeholder="Search ' + label2 + '..." oninput="render()" style="flex:1;min-width:140px;padding:7px 12px;border:1px solid #d5dbe3;border-radius:10px;font-size:13px;font-family:inherit">';
   h += '<select id="sortSelect" onchange="render()" style="padding:7px 10px;border:1px solid #d5dbe3;border-radius:10px;font-size:13px;font-family:inherit;background:#fff">';
@@ -196,7 +207,7 @@ function render() {
   h += '<table style="width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed">';
   h += '<tr style="background:#0033A0;color:#fff;text-align:left">';
   h += '<th style="width:38%;padding:6px 8px;cursor:pointer" onclick="sortBy(\'name\')">Name &#8597;</th>';
-  h += '<th style="padding:6px 8px">5-Year Total</th></tr>';
+  h += '<th style="padding:6px 8px">' + (showPerHomeFlag ? 'Per Homeowner (yr)' : '5-Year Total') + '</th></tr>';
   for (var i = 0; i < shown.length; i++) {
     var d = shown[i];
     var amt = d[field] || 0;
@@ -212,10 +223,14 @@ function render() {
       h += d.name;
     }
     h += '</td>';
-    h += '';
-    h += '<td style="padding:5px 8px"><div style="background:#f0f2f6;border-radius:4px;height:16px;width:100%;min-width:60px;max-width:150px;position:relative"><div style="background:linear-gradient(90deg,#feb24c,#c0392b);border-radius:4px;height:16px;width:' + pctW + '%"></div><span style="position:absolute;right:6px;top:2px;font-size:10px;color:#555;font-weight:700">$' + d.total5.toFixed(1) + 'M</span></div></td></tr>';
+    if (showPerHomeFlag) {
+      h += '<td style="padding:5px 8px"><div style="background:#e6f0fa;border-radius:4px;height:18px;width:100%;min-width:60px;max-width:150px;position:relative"><div style="background:linear-gradient(90deg,#4A90D9,#0033A0);border-radius:4px;height:18px;width:100%"></div><span style="position:absolute;right:6px;top:2px;font-size:11px;color:#0033A0;font-weight:700">$' + d.perHome.toFixed(0) + '/yr</span></div></td></tr>';
+    } else {
+      h += '<td style="padding:5px 8px"><div style="background:#f0f2f6;border-radius:4px;height:16px;width:100%;min-width:60px;max-width:150px;position:relative"><div style="background:linear-gradient(90deg,#feb24c,#c0392b);border-radius:4px;height:16px;width:' + pctW + '%"></div><span style="position:absolute;right:6px;top:2px;font-size:10px;color:#555;font-weight:700">$' + d.total5.toFixed(1) + 'M</span></div></td></tr>';
+    }
   }
   h += '</table></div>';
+  if (showPerHomeFlag) { showPerHomeFlag = false; }
   document.getElementById('topList').innerHTML = h;
 }
 
@@ -277,6 +292,17 @@ function sortBy(col) {
 }
 
 var sortDir = {};
+function showPerHome() {
+  showPerHomeFlag = true;
+  currentField = 'total5';
+  document.querySelectorAll('.toggle-bar button').forEach(function(b) {
+    var txt = b.textContent;
+    b.classList.toggle('active', txt.indexOf('Per Homeowner') >= 0);
+  });
+  render();
+}
+
+var showPerHomeFlag = false;
 
 // Handle sort select dropdown
 var _origRender = render;
