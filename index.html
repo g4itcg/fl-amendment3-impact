@@ -203,7 +203,15 @@ function render() {
     var y1v = d.y1 || 0;
     var pctW = Math.max(2, Math.round((d.total5 / (maxVal > 0 ? maxVal : 1)) * 100));
     var rowBg = i % 2 === 0 ? '#f7f9fc' : '#ffffff';
-    h += '<tr style="background:' + rowBg + '"><td style="padding:5px 8px;font-weight:600;white-space:nowrap">' + d.name + '</td>';
+    h += '<tr style="background:' + rowBg + '"><td style="padding:5px 8px;font-weight:600;white-space:nowrap">' 
+    if (currentTab === 'cities') {
+      var ph = 0; for (var hi = 0; hi < d.name.length; hi++) { ph = (ph * 31 + d.name.charCodeAt(hi)) % 997; }
+      var pp = ['#0033A0','#4A90D9','#00A0A0','#2E9E9E','#6B46C1','#B83280','#C05621','#2F855A','#D69E2E','#E53E3E','#805AD5','#319795','#38A169','#DD6B20','#D53F8C','#4299E1','#6D28D9','#0E7490','#B45309','#C026D3','#15803D','#9D174D','#1D4ED8','#F59E0B','#0D9488','#7C2D12','#2563EB','#BE185D','#4D7C0F','#9333EA','#0EA5E9','#A21CAF','#16A34A','#DB2777','#CA8A04','#035E7B'];
+      h += '<span style="color:' + pp[ph % pp.length] + '">' + d.name + '</span>';
+    } else {
+      h += d.name;
+    }
+    h += '</td>';
     h += '';
     h += '<td style="padding:5px 8px"><div style="background:#f0f2f6;border-radius:4px;height:16px;width:100%;min-width:60px;max-width:150px;position:relative"><div style="background:linear-gradient(90deg,#feb24c,#c0392b);border-radius:4px;height:16px;width:' + pctW + '%"></div><span style="position:absolute;right:6px;top:2px;font-size:10px;color:#555;font-weight:700">$' + d.total5.toFixed(1) + 'M</span></div></td></tr>';
   }
