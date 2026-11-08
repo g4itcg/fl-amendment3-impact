@@ -162,8 +162,13 @@ function hideTip() { document.getElementById('tooltip').style.display = 'none'; 
 function moveTip(e) {
   var t = document.getElementById('tooltip');
   var r = document.getElementById('mapWrap').getBoundingClientRect();
-  t.style.left = (e.pageX - r.left + 12) + 'px';
-  t.style.top = (e.pageY - r.top - t.offsetHeight - 8) + 'px';
+  var x = e.pageX - r.left + 12;
+  var y = e.pageY - r.top - t.offsetHeight - 8;
+  // Keep tooltip inside the map area
+  if (x + t.offsetWidth + 10 > r.width) { x = e.pageX - r.left - t.offsetWidth - 12; }
+  if (y < 0) { y = e.pageY - r.top + 20; }
+  t.style.left = Math.max(4, x) + 'px';
+  t.style.top = Math.max(4, y) + 'px';
 }
 
 render();
