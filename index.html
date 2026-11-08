@@ -88,7 +88,7 @@ function drawMapBackground() {
 function render() {
   drawMapBackground();
   var svg = document.getElementById('mapSvg');
-  var existing = svg.querySelectorAll('.circle-c, .label-t');
+  var existing = svg.querySelectorAll('.circle-c, .label-t, .county-bg');
   for (var i = 0; i < existing.length; i++) { existing[i].remove(); }
   document.getElementById('tooltip').style.display = 'none';
   
