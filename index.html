@@ -6,40 +6,40 @@
 <title>Amendment 3 - Revenue Impact Map</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f4f6f8;color:#222;padding:20px}
+body{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#F2F3F8;color:#1A1A2E;padding:20px}
 .wrap{max-width:860px;margin:auto}
-h1{font-size:24px;color:#1a1a2e;margin-bottom:2px}
-.sub{font-size:13px;color:#6e6e85;margin-bottom:12px}
+h1{font-size:26px;color:#1A1A2E;margin-bottom:2px}
+.sub{font-size:13px;color:#6E6E85;margin-bottom:12px}
 .tab-bar{display:flex;gap:6px;margin-bottom:12px}
-.tab-bar button{background:#e8ecf1;color:#444;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
-.tab-bar button.active{background:#0033a0;color:#fff}
-.legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:12px}
+.tab-bar button{background:#E8ECF1;color:#555;border:none;padding:8px 18px;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.tab-bar button.active{background:#0033A0;color:#fff}
+.legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:12px;color:#6E6E85}
 .legend-item{display:flex;align-items:center;gap:4px}
 .legend-bar{display:flex;height:10px;border-radius:3px;overflow:hidden;width:120px}
 .legend-bar div{flex:1}
-#mapWrap{position:relative;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;line-height:0}
+#mapWrap{position:relative;background:#FFFFFF;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.05);overflow:hidden;line-height:0}
 svg{display:block;width:100%;height:auto}
-.county-bg{fill:#eef1f6;stroke:#d5dbe3;stroke-width:0.5;pointer-events:none}
-.state-outline{fill:none;stroke:#b0b8c5;stroke-width:1.5}
-.circle-c{fill-opacity:0.7;stroke:#fff;stroke-width:1.2;cursor:pointer}
-.circle-c:hover{fill-opacity:0.9;stroke:#333;stroke-width:2}
-.label-t{font-size:8px;fill:#555;pointer-events:none;text-anchor:middle;font-weight:500}
-.tooltip{position:absolute;display:none;background:#1a1a2e;color:#fff;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.5;pointer-events:none;z-index:100;max-width:210px;box-shadow:0 4px 16px rgba(0,0,0,0.2)}
+.county-bg{fill:#E8EDF4;stroke:#D5DBE3;stroke-width:0.5;pointer-events:none}
+.state-outline{fill:none;stroke:#A0AEC0;stroke-width:1.5}
+.circle-c{fill-opacity:0.7;stroke:#fff;stroke-width:1.2;cursor:pointer;transition:opacity .15s}
+.circle-c:hover{fill-opacity:0.9;stroke:#002080;stroke-width:2}
+.label-t{font-size:8px;fill:#6E6E85;pointer-events:none;text-anchor:middle;font-weight:600}
+.tooltip{position:absolute;display:none;background:#002080;color:#fff;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;pointer-events:none;z-index:100;max-width:210px;box-shadow:0 4px 16px rgba(0,0,0,0.2)}
 .tooltip .nm{font-weight:700;font-size:14px;margin-bottom:2px}
-.tooltip .amt{color:#ffd700}
+.tooltip .amt{color:#F8D858}
 .top-list{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.top-item{background:#fff;padding:7px 10px;border-radius:6px;border-left:3px solid #c0392b;font-size:12px;line-height:1.4}
-.top-item .rk{color:#999;font-size:10px}
+.top-item{background:#FFFFFF;padding:7px 10px;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.05);border-left:3px solid #DE0100;font-size:12px;line-height:1.4}
+.top-item .rk{color:#6E6E85;font-size:10px}
 .toggle-bar{display:flex;gap:4px;margin:0 0 8px}
-.toggle-bar button{background:#e8ecf1;color:#555;border:none;padding:4px 12px;border-radius:4px;font-size:11px;cursor:pointer}
-.toggle-bar button.active{background:#c0392b;color:#fff}
-.footer{margin-top:10px;font-size:10px;color:#aaa;text-align:center}
+.toggle-bar button{background:#E8ECF1;color:#555;border:none;padding:4px 12px;border-radius:14px;font-size:11px;cursor:pointer}
+.toggle-bar button.active{background:#DE0100;color:#fff}
+.footer{margin-top:10px;font-size:10px;color:#A0AEC0;text-align:center}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>Property Tax Revenue Impact - Amendment 3</h1>
-<div class="sub">5-year projected reduction in non-school property tax revenue &bull; FY 2027-28 to 2031-32 &bull; Source: FL TaxWatch / REC &bull; Prepared by Ryann Greenberg</div>
+<div class="sub">5-year projected reduction in non-school property tax revenue &bull; FY 2027-28 to 2031-32 &bull; Source: FL TaxWatch / REC</div>
 <div class="tab-bar">
 <button class="active" onclick="switchTab('counties')">Counties</button>
 <button onclick="switchTab('cities')">Cities</button>
@@ -59,7 +59,7 @@ svg{display:block;width:100%;height:auto}
 <div id="mapWrap">
 <div class="tooltip" id="tooltip"></div>
 <svg viewBox="0 0 600 700" id="mapSvg">
-  <rect x="0" y="0" width="600" height="700" fill="#f5f7fa"/>
+  <rect x="0" y="0" width="600" height="700" fill="#F2F3F8" rx="14"/>
 </svg>
 </div>
 <div class="top-list" id="topList"></div>
