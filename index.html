@@ -64,6 +64,7 @@ svg{display:block;width:100%;height:auto}
 <div class="top-list" id="topList"></div>
 <div class="footer">Data: FL Office of Economic & Demographic Research (July 2026). City estimates from Florida Policy Institute.</div>
 </div>
+<script src="fl_outline_data.js"></script>
 <script>
 var COUNTIES = [{name:"Alachua",x:406.2,y:180.2,y1:77,y5:176.5,total5:689.4},{name:"Baker",x:414.8,y:101,y1:4.4,y5:7.6,total5:33},{name:"Bay",x:158.6,y:127.6,y1:27.1,y5:44.2,total5:203.7},{name:"Bradford",x:419.3,y:157.2,y1:5.3,y5:10.3,total5:41.5},{name:"Brevard",x:531,y:302.2,y1:126.9,y5:272.4,total5:1098.6},{name:"Broward",x:561.8,y:537.1,y1:535.7,y5:1193.2,total5:4865.6},{name:"Calhoun",x:193.3,y:102.9,y1:1.3,y5:1.4,total5:7.3},{name:"Charlotte",x:418.7,y:463.6,y1:46.1,y5:126.7,total5:452.6},{name:"Citrus",x:385.4,y:262.9,y1:38.3,y5:67.4,total5:289.4},{name:"Clay",x:441.6,y:146.8,y1:42.9,y5:79.4,total5:342.3},{name:"Collier",x:464.2,y:550.4,y1:72.8,y5:203.3,total5:751.7},{name:"Columbia",x:385.2,y:102.8,y1:8.7,y5:13.1,total5:60.2},{name:"DeSoto",x:438.7,y:434.2,y1:4.5,y5:8.9,total5:36},{name:"Dixie",x:336.3,y:196.3,y1:2.1,y5:2.1,total5:11.1},{name:"Duval",x:462.3,y:108.2,y1:198.5,y5:416.2,total5:1689},{name:"Escambia",x:28.9,y:67.3,y1:45.3,y5:82.1,total5:346.9},{name:"Flagler",x:483.8,y:196.3,y1:49.5,y5:116.5,total5:456.8},{name:"Franklin",x:214.2,y:179.3,y1:2.1,y5:3.9,total5:16.5},{name:"Gadsden",x:233,y:80.2,y1:6,y5:8.3,total5:38.8},{name:"Gilchrist",x:370,y:164.5,y1:3.6,y5:7.2,total5:28.6},{name:"Glades",x:494.5,y:445.3,y1:2.3,y5:4.1,total5:17.1},{name:"Gulf",x:183.4,y:162.2,y1:2.6,y5:7.7,total5:26.7},{name:"Hamilton",x:354.9,y:86.9,y1:1.4,y5:1.8,total5:8.7},{name:"Hardee",x:441.2,y:397.9,y1:2.7,y5:4.5,total5:19.5},{name:"Hendry",x:490.8,y:480.6,y1:7.7,y5:16.7,total5:65.5},{name:"Hernando",x:421.5,y:297.8,y1:38.5,y5:76.9,total5:315},{name:"Highlands",x:458.7,y:420.5,y1:15.4,y5:27.2,total5:114.9},{name:"Hillsborough",x:415.1,y:368,y1:342,y5:942,total5:3430.1},{name:"Holmes",x:151.3,y:69.8,y1:3.2,y5:4.6,total5:21.6},{name:"Indian River",x:519.6,y:400.2,y1:40.7,y5:91.4,total5:366.9},{name:"Jackson",x:161.4,y:68.4,y1:4.1,y5:4.7,total5:24.1},{name:"Jefferson",x:186.1,y:127.4,y1:2.2,y5:3.3,total5:15.2},{name:"Lafayette",x:346.9,y:167.8,y1:1,y5:1.3,total5:6.2},{name:"Lake",x:458,y:330.7,y1:98.9,y5:240.8,total5:930.9},{name:"Lee",x:427.4,y:506.7,y1:178,y5:453.3,total5:1740.5},{name:"Leon",x:100.6,y:98.5,y1:56.8,y5:100.9,total5:447},{name:"Levy",x:380.2,y:253.3,y1:8,y5:13.1,total5:57.1},{name:"Liberty",x:197.5,y:161.2,y1:0.7,y5:1,total5:4.5},{name:"Madison",x:219.8,y:106.9,y1:2.2,y5:3.6,total5:15.4},{name:"Manatee",x:409.9,y:418.8,y1:85.7,y5:212.3,total5:825.5},{name:"Marion",x:413.2,y:253,y1:87.6,y5:170.9,total5:707.6},{name:"Martin",x:524.6,y:450.6,y1:50.3,y5:111,total5:456.3},{name:"Miami-Dade",x:536.5,y:548.2,y1:524.7,y5:1392.6,total5:5161.5},{name:"Monroe",x:505,y:590.7,y1:13.7,y5:38.5,total5:144.7},{name:"Nassau",x:434.5,y:78.7,y1:30.5,y5:77,total5:297.2},{name:"Okaloosa",x:64.1,y:82.9,y1:26.5,y5:46.1,total5:204.9},{name:"Okeechobee",x:485.7,y:393.9,y1:5.7,y5:12.1,total5:47.4},{name:"Orange",x:471.5,y:333.5,y1:270.2,y5:781.1,total5:2825.1},{name:"Osceola",x:511.4,y:355.3,y1:87.3,y5:257.4,total5:922.2},{name:"Palm Beach",x:545.4,y:470.3,y1:418.1,y5:1070.1,total5:4108.4},{name:"Pasco",x:414.3,y:335.3,y1:158.2,y5:364.9,total5:1435.4},{name:"Pinellas",x:395.8,y:373.2,y1:269.3,y5:561.4,total5:2319.1},{name:"Polk",x:459.5,y:364.7,y1:138.7,y5:365.6,total5:1336.4},{name:"Putnam",x:446.8,y:252.9,y1:10.9,y5:15.6,total5:72.1},{name:"Santa Rosa",x:49.6,y:85.9,y1:26.7,y5:55.2,total5:226.7},{name:"Sarasota",x:412.9,y:435.3,y1:85.1,y5:206.9,total5:807.1},{name:"Seminole",x:465.6,y:315.1,y1:100,y5:230.1,total5:913.7},{name:"St. Johns",x:457.2,y:223.8,y1:76,y5:214.7,total5:803.4},{name:"St. Lucie",x:524.8,y:408.2,y1:127.7,y5:281.6,total5:1055.2},{name:"Sumter",x:428.1,y:305.4,y1:35.6,y5:88.7,total5:347.4},{name:"Suwannee",x:340.7,y:130.2,y1:6.8,y5:12,total5:49.4},{name:"Taylor",x:136.5,y:146.5,y1:2.4,y5:3.3,total5:15.3},{name:"Union",x:388.4,y:113.8,y1:1.4,y5:1.5,total5:7.9},{name:"Volusia",x:488.9,y:278.4,y1:160.7,y5:355.1,total5:1415.5},{name:"Wakulla",x:119.5,y:153.3,y1:6.4,y5:12.4,total5:52.2},{name:"Walton",x:88.4,y:76.6,y1:14,y5:51.9,total5:171.1},{name:"Washington",x:156.9,y:78.1,y1:3.2,y5:5.3,total5:22.3}];
 
@@ -72,7 +73,20 @@ var CITIES = [{name:"Alachua",x:406,y:264,y1:1.9,y5:3.2,total5:12.8},{name:"Alta
 var currentTab = 'counties';
 var currentField = 'total5';
 
+function drawMapBackground() {
+  var svg = document.getElementById('mapSvg');
+  if (typeof FL_PATHS !== 'undefined') {
+    FL_PATHS.forEach(function(d) {
+      var p = document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('d', d);
+      p.setAttribute('class', 'county-bg');
+      svg.appendChild(p);
+    });
+  }
+}
+
 function render() {
+  drawMapBackground();
   var svg = document.getElementById('mapSvg');
   var existing = svg.querySelectorAll('.circle-c, .label-t');
   for (var i = 0; i < existing.length; i++) { existing[i].remove(); }
