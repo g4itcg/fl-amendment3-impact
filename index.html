@@ -203,7 +203,7 @@ function render() {
   
   var h = '<div style="font-weight:700;font-size:13px;margin:12px 0 6px;grid-column:1/-1">All ' + (showPerHomeFlag ? label2 + ' by estimated annual savings (2028)' : label2 + ' by revenue loss (' + label + ')') + ' — ' + fmtN(shown.length, 0) + ' total</div>';
   h += '<div style="grid-column:1/-1;display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">';
-  h += '<input id="searchBox" type="text" placeholder="Search ' + label2 + '..." oninput="render()" style="flex:1;min-width:140px;padding:7px 12px;border:1px solid #d5dbe3;border-radius:10px;font-size:13px;font-family:inherit">';
+  h += '<input id="searchBox" type="text" placeholder="Search ' + label2 + '..." oninput="currentPage=0;render()" style="flex:1;min-width:140px;padding:7px 12px;border:1px solid #d5dbe3;border-radius:10px;font-size:13px;font-family:inherit">';
   h += '<select id="sortSelect" onchange="render()" style="padding:7px 10px;border:1px solid #d5dbe3;border-radius:10px;font-size:13px;font-family:inherit;background:#fff">';
   h += '<option value="total5desc">Sort: Revenue Loss (high)</option>';
   h += '<option value="total5asc">5-Yr Total (low)</option>';
@@ -216,8 +216,17 @@ function render() {
   h += '<tr style="background:#0033A0;color:#fff;text-align:left">';
   h += '<th style="width:38%;padding:6px 8px;cursor:pointer" onclick="sortBy(\'name\')">Name &#8597;</th>';
   h += '<th style="padding:6px 8px">' + (showPerHomeFlag ? 'Per Homeowner (yr)' : '5-Year Total') + '</th></tr>';
-  for (var i = 0; i < shown.length; i++) {
-    var d = shown[i];
+  var pageSize = 25;
+  var totalPages = Math.max(1, Math.ceil(shown.length / pageSize));
+  var page = typeof currentPage === 'undefined' ? 0 : currentPage;
+  if (page >= totalPages) page = totalPages - 1;
+  if (page < 0) page = 0;
+  var start = page * pageSize;
+  var end = Math.min(start + pageSize, shown.length);
+  var pageShown = shown.slice(start, end);
+  
+  for (var i = 0; i < pageShown.length; i++) {
+    var d = pageShown[i];
     var amt = d[field] || 0;
     var y1v = d.y1 || 0;
     var pctW = Math.max(2, Math.round((d.total5 / (maxVal > 0 ? maxVal : 1)) * 100));
@@ -238,6 +247,20 @@ function render() {
     }
   }
   h += '</table></div>';
+  // Pagination controls
+  h += '<div style="grid-column:1/-1;display:flex;align-items:center;gap:6px;margin:6px 0;font-size:12px">';
+  if (page > 0) {
+    h += '<button onclick="changePage(' + (page-1) + ')" style="background:#0033A0;color:#fff;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:11px">&larr; Prev</button>';
+  } else {
+    h += '<span style="padding:4px 12px;font-size:11px;color:#ccc">&larr; Prev</span>';
+  }
+  h += '<span style="padding:4px 8px">Page ' + (page+1) + ' of ' + totalPages + '</span>';
+  if (page < totalPages - 1) {
+    h += '<button onclick="changePage(' + (page+1) + ')" style="background:#0033A0;color:#fff;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:11px">Next &rarr;</button>';
+  } else {
+    h += '<span style="padding:4px 12px;font-size:11px;color:#ccc">Next &rarr;</span>';
+  }
+  h += '<span style="margin-left:8px;color:#888;font-size:11px">Showing ' + (start+1) + '-' + end + ' of ' + shown.length + '</span></div>';
   if (showPerHomeFlag) { showPerHomeFlag = false; }
   document.getElementById('topList').innerHTML = h;
 }
@@ -287,6 +310,12 @@ function moveTip(e) {
   t.style.top = y + 'px';
 }
 
+var currentPage = 0;
+function changePage(p) {
+  currentPage = p;
+  render();
+}
+
 function sortBy(col) {
   var data = currentTab === 'counties' ? COUNTIES : CITIES;
   var dir = sortDir[col] === 'asc' ? 'desc' : 'asc';
@@ -296,6 +325,7 @@ function sortBy(col) {
   } else {
     data.sort(function(a,b) { return dir === 'asc' ? a[col] - b[col] : b[col] - a[col]; });
   }
+  currentPage = 0;
   render();
 }
 
@@ -317,6 +347,7 @@ var _origRender = render;
 render = function() {
   var sel = document.getElementById('sortSelect');
   if (sel && sel.value) {
+    currentPage = 0;
     var data = currentTab === 'counties' ? COUNTIES : CITIES;
     var v = sel.value;
     if (v === 'total5desc') data.sort(function(a,b) { return b.total5 - a.total5; });
