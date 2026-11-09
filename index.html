@@ -203,7 +203,7 @@ function render() {
   
   var h = '<div style="font-weight:700;font-size:13px;margin:12px 0 6px;grid-column:1/-1">All ' + (showPerHomeFlag ? label2 + ' by estimated annual savings (2028)' : label2 + ' by revenue loss (' + label + ')') + ' — ' + fmtN(shown.length, 0) + ' total</div>';
   h += '<div style="grid-column:1/-1;display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">';
-  h += '<input id="searchBox" type="text" placeholder="Search ' + label2 + '..." oninput="currentPage=0;render()" style="flex:1;min-width:140px;padding:7px 12px;border:1px solid #d5dbe3;border-radius:10px;font-size:13px;font-family:inherit">';
+  h += '<input id="searchBox" type="text" placeholder="Search ' + label2 + '..." oninput="render()" style="flex:1;min-width:140px;padding:7px 12px;border:1px solid #d5dbe3;border-radius:10px;font-size:13px;font-family:inherit">';
   h += '<select id="sortSelect" onchange="render()" style="padding:7px 10px;border:1px solid #d5dbe3;border-radius:10px;font-size:13px;font-family:inherit;background:#fff">';
   h += '<option value="total5desc">Sort: Revenue Loss (high)</option>';
   h += '<option value="total5asc">5-Yr Total (low)</option>';
@@ -313,7 +313,8 @@ function moveTip(e) {
 var currentPage = 0;
 function changePage(p) {
   currentPage = p;
-  render();
+  // Bypass wrapper to avoid any side effects
+  _origRender();
 }
 
 function sortBy(col) {
@@ -325,7 +326,6 @@ function sortBy(col) {
   } else {
     data.sort(function(a,b) { return dir === 'asc' ? a[col] - b[col] : b[col] - a[col]; });
   }
-  currentPage = 0;
   render();
 }
 
@@ -345,9 +345,9 @@ var showPerHomeFlag = false;
 // Handle sort select dropdown
 var _origRender = render;
 render = function() {
+ if (typeof currentPage !== "undefined") console.log("render: currentPage="+currentPage+showPerHomeFlag);
   var sel = document.getElementById('sortSelect');
   if (sel && sel.value) {
-    currentPage = 0;
     var data = currentTab === 'counties' ? COUNTIES : CITIES;
     var v = sel.value;
     if (v === 'total5desc') data.sort(function(a,b) { return b.total5 - a.total5; });
